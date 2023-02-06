@@ -27,7 +27,7 @@ router = APIRouter()
     # return await book_dal.get_all_books()
 
 @router.get("/api/v1/menus",
-    response_model=list[schemas.Menu],
+    # response_model=list[schemas.Menu],
     summary="Get all menus",
     description="You can look all of the menus",
 )
