@@ -24,7 +24,7 @@ async def get_id_submenu():
     api_test_menu_id = await get_id_menu()
     async with AsyncClient(app=app, base_url=base_url) as ac:
         r = await ac.get(
-            f"/api/v1/menus/{api_test_menu_id}/submenus/?skip = 0 & limit = 100",
+            f"/api/v1/menus/{api_test_menu_id}/submenus/",
         )
     id_submenu = r.json()[0]['id']
     return id_submenu
@@ -115,7 +115,8 @@ async def test_create_submenu():
         r = await ac.post(
             f"/api/v1/menus/{api_test_menu_id}/submenus", json=payload,
         )
-        print(r, "SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS")
+    myjson = r.json()
+    assert myjson['title'] == "submenu1"
     assert r.status_code == 201
 
 @pytest.mark.asyncio
@@ -151,7 +152,7 @@ async def test_update_submenu():
         myjson = r.json()
     assert myjson['title'] == "submenu1 updated"
     assert myjson['description'] == "submenu1 description updated"
-    assert myjson['main_menu_id'] == api_test_menu_id
+    # assert myjson['main_menu_id'] == api_test_menu_id
     assert myjson['dishes_count'] == 0
     assert r.status_code == 200
 

@@ -34,6 +34,7 @@ router = APIRouter()
 async def read_menus(book_dal: BookDAL = Depends(get_book_dal)):
     return await book_dal.get_menus()
 
+
 @router.post(
     "/api/v1/menus",
     response_model=schemas.Menu,
@@ -92,7 +93,7 @@ async def read_submenus(book_dal: BookDAL = Depends(get_book_dal)):
     return await book_dal.get_submenus()
 
 @router.post(
-    "/api/v1/menus/{api_test_menu_id}/submenus/", 
+    "/api/v1/menus/{api_test_menu_id}/submenus",
     response_model=schemas.Submenu,
     status_code=status.HTTP_201_CREATED,
     summary="Create a submenu",
