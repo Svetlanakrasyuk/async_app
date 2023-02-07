@@ -6,7 +6,7 @@ from sqlalchemy import update, delete
 from sqlalchemy.future import select
 from sqlalchemy.orm import Session, selectinload
 
-from db.models.book import Menu, Submenu, Dish
+from db.models.menu import Menu, Submenu, Dish
 from db.models import schemas
 from db.config import redis
 from db.cashe import cashe
