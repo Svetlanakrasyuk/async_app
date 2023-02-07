@@ -11,23 +11,8 @@ from db.models import schemas
 router = APIRouter()
 
 
-# @router.post("/books")
-# async def create_book(name: str, author: str, release_year: int, book_dal: BookDAL = Depends(get_book_dal)):
-#     return await book_dal.create_book(name, author, release_year)
-
-
-# @router.put("/books/{book_id}")
-# async def update_book(book_id: int, name: Optional[str] = None, author: Optional[str] = None, release_year: Optional[int] = None,
-#                       book_dal: BookDAL = Depends(get_book_dal)):
-#     return await book_dal.update_book(book_id, name, author, release_year)
-
-
-# @router.get("/books")
-# async def get_all_books(book_dal: BookDAL = Depends(get_book_dal)):
-    # return await book_dal.get_all_books()
-
 @router.get("/api/v1/menus",
-    # response_model=list[schemas.Menu],
+    response_model=list[schemas.Menu],
     summary="Get all menus",
     description="You can look all of the menus",
 )
@@ -49,7 +34,7 @@ async def create_menu(menu: schemas.MenuCreate, book_dal: BookDAL = Depends(get_
 
 @router.get(
     "/api/v1/menus/{api_test_menu_id}",
-    # response_model=schemas.Menu,
+    response_model=schemas.Menu,
     summary="Get one menu",
     description="You can look at the menu",
 )
@@ -84,7 +69,7 @@ async def delete_menu(api_test_menu_id: str, book_dal: BookDAL = Depends(get_boo
     return res
 
 @router.get(
-    "/api/v1/menus/{api_test_menu_id}/submenus/",
+    "/api/v1/menus/{api_test_menu_id}/submenus",
     response_model=list[schemas.Submenu],
     summary="Get all submenus",
     description="You can look all information about the submenus",

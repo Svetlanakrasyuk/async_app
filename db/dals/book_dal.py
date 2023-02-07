@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List
 from fastapi.encoders import jsonable_encoder
 from fastapi import HTTPException
 
@@ -231,3 +231,44 @@ class BookDAL():
         result = {"status": True, "message": "The dish has been deleted"}
         await cashe.change_dish_cashe(api_test_menu_id, api_test_submenu_id, dish_id)
         return result
+
+    async def fill_base(self):
+        menu1 = Menu(title="Меню", description="Основное меню")
+        r = await self.create_menu(menu1)
+        menu1_id = r.id
+        submenu1 = Submenu(title="Холодные закуски", description="К пиву")
+        sub1 = await self.create_submenu(submenu1, main_menu_id=menu1_id)
+        sub1_id = sub1.id
+        dish1 = Dish(title="Селедь Бисмарк", description="Традиционное блюдо из сельди", price="182,99")
+        await self.create_dish(dish1, sub1_id, menu1_id)
+        dish2 = Dish(title="Мясная тарелка", description="Нарезка из мяса", price="170,10")
+        await self.create_dish(dish2, sub1_id, menu1_id)
+        dish3 = Dish(title="Рыбная тарелка", description="Нарезка из рыбы", price="162,20")
+        await self.create_dish(dish3, sub1_id, menu1_id)
+        submenu2 = Submenu(title="Рамен", description="Горячий рамен")
+        sub2 = await self.create_submenu(submenu2, main_menu_id=menu1_id)
+        sub2_id = sub2.id
+        dish4 = Dish(title="Дайзи", description="Рамен на куринном бульоне", price="167,99")
+        await self.create_dish(dish4, sub2_id, menu1_id)
+        dish5 = Dish(title="Унаги", description="Рамен на рыбном бульоне", price="123,50")
+        await self.create_dish(dish5, sub2_id, menu1_id)
+        dish6 = Dish(title="Чиизу", description="Рамен на сырном бульоне", price="188,90")
+        await self.create_dish(dish6, sub2_id, menu1_id)
+        menu2 = Menu(title="Алкоголь", description="Алкогольные напитки")
+        r = await self.create_menu(menu2)
+        menu2_id = r.id
+        submenu3 = Submenu(title="Красные вина", description="Для романтического вечера")
+        sub3 = await self.create_submenu(submenu3, main_menu_id=menu2_id)
+        sub3_id = sub3.id
+        dish7 = Dish(title="Вино красное", description="Фруктовое", price="382,99")
+        await self.create_dish(dish7, sub3_id, menu2_id)
+        dish8 = Dish(title="Вино красное", description="Сухое", price="270,10")
+        await self.create_dish(dish8, sub3_id, menu2_id)
+        submenu4 = Submenu(title="Виски", description="Для интересных бесед")
+        sub4 = await self.create_submenu(submenu4, main_menu_id=menu2_id)
+        sub4_id = sub4.id
+        dish9 = Dish(title="Чивас", description="5 лет", price="547,99")
+        await self.create_dish(dish9, sub4_id, menu2_id)
+        dish10 = Dish(title="Джек", description="7 лет", price="475,10")
+        await self.create_dish(dish10, sub4_id, menu2_id)
+        return "База данных заполнена тестовым меню"

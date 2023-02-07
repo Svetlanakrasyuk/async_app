@@ -152,7 +152,6 @@ async def test_update_submenu():
         myjson = r.json()
     assert myjson['title'] == "submenu1 updated"
     assert myjson['description'] == "submenu1 description updated"
-    # assert myjson['main_menu_id'] == api_test_menu_id
     assert myjson['dishes_count'] == 0
     assert r.status_code == 200
 

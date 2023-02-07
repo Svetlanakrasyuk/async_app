@@ -2,10 +2,10 @@ import uvicorn
 from fastapi import FastAPI
 
 from db.config import engine, Base
-from routers import book_router
+from routers import menu_router
 
 app = FastAPI()
-app.include_router(book_router.router)
+app.include_router(menu_router.router)
 
 
 @app.on_event("startup")
