@@ -1,5 +1,5 @@
 from db.config import async_session
-from db.dals.book_dal import MenuDAL
+from db.dals.menu_dal import MenuDAL
 
 
 async def get_book_dal():

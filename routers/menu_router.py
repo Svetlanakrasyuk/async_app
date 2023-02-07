@@ -3,7 +3,7 @@ from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException
 from starlette import status
 
-from db.dals.book_dal import MenuDAL
+from db.dals.menu_dal import MenuDAL
 from db.models.book import Book
 from dependencies import get_book_dal
 from db.models import schemas
