@@ -5,7 +5,7 @@ from starlette import status
 
 from db.dals.menu_dal import MenuDAL
 from db.models.book import Book
-from dependencies import get_book_dal
+from dependencies import get_menu_dal
 from db.models import schemas
 
 router = APIRouter()
@@ -16,7 +16,7 @@ router = APIRouter()
     summary="Get all menus",
     description="You can look all of the menus",
 )
-async def read_menus(book_dal: MenuDAL = Depends(get_book_dal)):
+async def read_menus(book_dal: MenuDAL = Depends(get_menu_dal)):
     return await book_dal.get_menus()
 
 
@@ -27,7 +27,7 @@ async def read_menus(book_dal: MenuDAL = Depends(get_book_dal)):
     summary="Create a menu",
     description="Create an menu with all the information, title, description",
 )
-async def create_menu(menu: schemas.MenuCreate, book_dal: MenuDAL = Depends(get_book_dal)):
+async def create_menu(menu: schemas.MenuCreate, book_dal: MenuDAL = Depends(get_menu_dal)):
     # Проверка уникальности меню
     await book_dal.get_menu_by_title(title=menu.title)
     return await book_dal.create_menu(menu=menu)
@@ -38,7 +38,7 @@ async def create_menu(menu: schemas.MenuCreate, book_dal: MenuDAL = Depends(get_
     summary="Get one menu",
     description="You can look at the menu",
 )
-async def read_menu(api_test_menu_id: str, book_dal: MenuDAL = Depends(get_book_dal)):
+async def read_menu(api_test_menu_id: str, book_dal: MenuDAL = Depends(get_menu_dal)):
     db_menu = await book_dal.get_menu(menu_id=api_test_menu_id)
     if not db_menu:
         raise HTTPException(status_code=404, detail="menu not found")
@@ -50,7 +50,7 @@ async def read_menu(api_test_menu_id: str, book_dal: MenuDAL = Depends(get_book_
     summary="Get one menu for update",
     description="You can update the menu with all the information, title, description",
 )
-async def update_menu(api_test_menu_id: str, menu: schemas.MenuBase, book_dal: MenuDAL = Depends(get_book_dal)):
+async def update_menu(api_test_menu_id: str, menu: schemas.MenuBase, book_dal: MenuDAL = Depends(get_menu_dal)):
     db_menu = await book_dal.get_menu(menu_id=api_test_menu_id)
     if db_menu is None:
         raise HTTPException(status_code=404, detail="menu not found")
@@ -61,7 +61,7 @@ async def update_menu(api_test_menu_id: str, menu: schemas.MenuBase, book_dal: M
     summary="Get one menu for delete",
     description="You can delete the menu with all submenus and dishes",
 )
-async def delete_menu(api_test_menu_id: str, book_dal: MenuDAL = Depends(get_book_dal)):
+async def delete_menu(api_test_menu_id: str, book_dal: MenuDAL = Depends(get_menu_dal)):
     db_menu = await book_dal.get_menu(menu_id=api_test_menu_id)
     if db_menu is None:
         raise HTTPException(status_code=404, detail="menu not found")
@@ -74,7 +74,7 @@ async def delete_menu(api_test_menu_id: str, book_dal: MenuDAL = Depends(get_boo
     summary="Get all submenus",
     description="You can look all information about the submenus",
 )
-async def read_submenus(book_dal: MenuDAL = Depends(get_book_dal)):
+async def read_submenus(book_dal: MenuDAL = Depends(get_menu_dal)):
     return await book_dal.get_submenus()
 
 @router.post(
@@ -85,7 +85,7 @@ async def read_submenus(book_dal: MenuDAL = Depends(get_book_dal)):
     description="Create an submenu with all the information, title, description",
 )
 async def create_submenu(
-    api_test_menu_id: str, submenu: schemas.SubmenuCreate, book_dal: MenuDAL = Depends(get_book_dal),
+    api_test_menu_id: str, submenu: schemas.SubmenuCreate, book_dal: MenuDAL = Depends(get_menu_dal),
 ):
     return await book_dal.create_submenu(submenu=submenu, main_menu_id=api_test_menu_id)
 
@@ -95,7 +95,7 @@ async def create_submenu(
     summary="Get one submenu",
     description="You can look information about the submenu",
 )
-async def read_submenu(api_test_submenu_id: str, book_dal: MenuDAL = Depends(get_book_dal)):
+async def read_submenu(api_test_submenu_id: str, book_dal: MenuDAL = Depends(get_menu_dal)):
     db_submenu = await book_dal.get_submenu(submenu_id=api_test_submenu_id)
     if not db_submenu:
         raise HTTPException(status_code=404, detail="submenu not found")
@@ -107,7 +107,7 @@ async def read_submenu(api_test_submenu_id: str, book_dal: MenuDAL = Depends(get
     summary="Get one submenu for update",
     description="You can update the submenu with all the information, title, description",
 )
-async def update_submenu(api_test_submenu_id: str, submenu: schemas.SubmenuBase, book_dal: MenuDAL = Depends(get_book_dal)):
+async def update_submenu(api_test_submenu_id: str, submenu: schemas.SubmenuBase, book_dal: MenuDAL = Depends(get_menu_dal)):
     db_submenu = await book_dal.get_submenu(submenu_id=api_test_submenu_id)
     if db_submenu is None:
         raise HTTPException(status_code=404, detail="submenu not found")
@@ -118,7 +118,7 @@ async def update_submenu(api_test_submenu_id: str, submenu: schemas.SubmenuBase,
     summary="Delete one submenu",
     description="You can delete the menu with all dishes",
 )
-async def delete_submenu(api_test_submenu_id: str, api_test_menu_id: str, book_dal: MenuDAL = Depends(get_book_dal)):
+async def delete_submenu(api_test_submenu_id: str, api_test_menu_id: str, book_dal: MenuDAL = Depends(get_menu_dal)):
     db_submenu = await book_dal.get_submenu(submenu_id=api_test_submenu_id)
     if db_submenu is None:
         raise HTTPException(status_code=404, detail="submenu not found")
@@ -130,7 +130,7 @@ async def delete_submenu(api_test_submenu_id: str, api_test_menu_id: str, book_d
     summary="Create a dish",
     description="Create a dish with all the information, title, description, price",
 )
-async def create_dish(api_test_submenu_id: str, api_test_menu_id: str, dish: schemas.DishCreate, book_dal: MenuDAL = Depends(get_book_dal)):
+async def create_dish(api_test_submenu_id: str, api_test_menu_id: str, dish: schemas.DishCreate, book_dal: MenuDAL = Depends(get_menu_dal)):
     return await book_dal.create_dish(dish=dish, submenu_id=api_test_submenu_id, menu_id=api_test_menu_id)
 
 @router.get(
@@ -139,7 +139,7 @@ async def create_dish(api_test_submenu_id: str, api_test_menu_id: str, dish: sch
     summary="Get all dishes",
     description="You can look all information about the dishes",
 )
-async def read_dishes(book_dal: MenuDAL = Depends(get_book_dal)):
+async def read_dishes(book_dal: MenuDAL = Depends(get_menu_dal)):
     dishes = await book_dal.get_dishes()
     return dishes
 
@@ -149,7 +149,7 @@ async def read_dishes(book_dal: MenuDAL = Depends(get_book_dal)):
     summary="Get one dish",
     description="You can look all information about the dish",
 )
-async def read_dish(api_test_dish_id: str, book_dal: MenuDAL = Depends(get_book_dal)):
+async def read_dish(api_test_dish_id: str, book_dal: MenuDAL = Depends(get_menu_dal)):
     db_dish = await book_dal.get_dish(dish_id=api_test_dish_id)
     return db_dish
 
@@ -159,7 +159,7 @@ async def read_dish(api_test_dish_id: str, book_dal: MenuDAL = Depends(get_book_
     summary="Get one dish for update",
     description="You can update the dish with all the information, title, description, price",
 )
-async def update_dish(api_test_dish_id: str, api_test_submenu_id: str, api_test_menu_id: str, dish: schemas.DishBase, book_dal: MenuDAL = Depends(get_book_dal)):
+async def update_dish(api_test_dish_id: str, api_test_submenu_id: str, api_test_menu_id: str, dish: schemas.DishBase, book_dal: MenuDAL = Depends(get_menu_dal)):
     db_dish = await book_dal.get_dish(dish_id=api_test_dish_id)
     if db_dish is None:
         raise HTTPException(status_code=404, detail="dish not found")
@@ -170,7 +170,7 @@ async def update_dish(api_test_dish_id: str, api_test_submenu_id: str, api_test_
     summary="Delete one dish",
     description="You can delete the dish",
 )
-async def delete_dish(api_test_dish_id: str, api_test_submenu_id: str, api_test_menu_id: str, book_dal: MenuDAL = Depends(get_book_dal)):
+async def delete_dish(api_test_dish_id: str, api_test_submenu_id: str, api_test_menu_id: str, book_dal: MenuDAL = Depends(get_menu_dal)):
     db_dish = await book_dal.get_dish(dish_id=api_test_dish_id)
     if db_dish is None:
         raise HTTPException(status_code=404, detail="dish not found")
